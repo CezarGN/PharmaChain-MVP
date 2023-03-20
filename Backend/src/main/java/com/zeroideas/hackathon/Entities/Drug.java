@@ -11,7 +11,6 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "medicines")
-@Component
 public class Drug {
     @Id
     long id;

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+//we use a builder design pattern to build our dto so that we can get data from our database
 @Service
 public class DrugServices{
 
