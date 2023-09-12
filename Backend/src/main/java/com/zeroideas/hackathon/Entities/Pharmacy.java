@@ -1,21 +1,17 @@
 package com.zeroideas.hackathon.Entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "pharmacy")
 public class Pharmacy {
     @Id
-    @Column(name = "id")
-    long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     @Column(name = "name")
     private String name;
     @Column(name = "schedule")

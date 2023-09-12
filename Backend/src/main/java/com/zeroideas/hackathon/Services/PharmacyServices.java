@@ -7,6 +7,10 @@ import org.springframework.stereotype.Service;
 //For future use: good to have this service class
 @Service
 public class PharmacyServices {
-    @Autowired
-   PharmacyRepository pharmacyRepository;
+    private final PharmacyRepository pharmacyRepository;
+    public PharmacyServices(PharmacyRepository pharmacyRepository) {
+        this.pharmacyRepository = pharmacyRepository;
+    }
+
+
 }

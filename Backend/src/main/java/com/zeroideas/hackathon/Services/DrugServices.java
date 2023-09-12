@@ -10,43 +10,44 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
-//we use a builder design pattern to build our dto so that we can get data from our database
+
+//We use a builder design pattern to build our dto so that we can extract data about a drug or medicine from our database
 @Service
-public class DrugServices{
+public class DrugServices {
 
-    @Autowired
-    private DrugsRepository drugsRepository;
-    @Autowired
-    private PharmacyRepository pharmacyRepository;
+    private final DrugsRepository drugsRepository;
+    private final PharmacyRepository pharmacyRepository;
 
-    public List<PharmacyDrugsDto> getPharmacies(String name){
-
-        List<Drug> drug = drugsRepository.findByName(name);
-        drug.sort((Drug m1, Drug m2)-> {
-            return m1.getPrice() - m2.getPrice();
-        });
-        return buildPharmacyDrugsDto(drug,drug.get(0).getName());
+    public DrugServices(DrugsRepository drugsRepository, PharmacyRepository pharmacyRepository) {
+        this.drugsRepository = drugsRepository;
+        this.pharmacyRepository = pharmacyRepository;
     }
 
-  private List<PharmacyDrugsDto> buildPharmacyDrugsDto(List<Drug> pharmacyDrugPrices, String name){
-      List<PharmacyDrugsDto> pharmacyDrugsDtos = new ArrayList<>();
-      for(Drug p: pharmacyDrugPrices){
-          pharmacyDrugsDtos.add(getPharmacy(p, name));
-      }
-      return pharmacyDrugsDtos;
-  }
+    public List<PharmacyDrugsDto> getPharmacies(String name) {
 
-  private PharmacyDrugsDto getPharmacy(Drug pharmacyDrugPrice, String name){
-      List<Pharmacy> pharmacy = pharmacyRepository.findById(pharmacyDrugPrice.getId_pharmacy());
-      return PharmacyDrugsDto.builder().
-              pharmacyId(pharmacy.get(0).getId()).
-              name(pharmacy.get(0).getName()).
-              schedule(pharmacy.get(0).getSchedule()).
-              positionX(pharmacy.get(0).getPositionX()).
-              positionY(pharmacy.get(0).getPositionY()).
-              drugName(name).
-              price(pharmacyDrugPrice.getPrice()).
-              build();
-  }
+        List<Drug> drug = drugsRepository.findByName(name);
+        drug.sort(Comparator.comparingInt(Drug::getPrice));
+        return buildPharmacyDrugsDto(drug, drug.get(0).getName());
+    }
 
+    private List<PharmacyDrugsDto> buildPharmacyDrugsDto(List<Drug> pharmacyDrugPrices, String name) {
+        List<PharmacyDrugsDto> pharmacyDrugsDtos = new ArrayList<>();
+        for (Drug p : pharmacyDrugPrices) {
+            pharmacyDrugsDtos.add(getPharmacy(p, name));
+        }
+        return pharmacyDrugsDtos;
+    }
+
+    private PharmacyDrugsDto getPharmacy(Drug pharmacyDrugPrice, String name) {
+        List<Pharmacy> pharmacy = pharmacyRepository.findById(pharmacyDrugPrice.getPharmacy_id());
+        return PharmacyDrugsDto.builder().
+                pharmacyId(pharmacy.get(0).getId()).
+                name(pharmacy.get(0).getName()).
+                schedule(pharmacy.get(0).getSchedule()).
+                positionX(pharmacy.get(0).getPositionX()).
+                positionY(pharmacy.get(0).getPositionY()).
+                drugName(name).
+                price(pharmacyDrugPrice.getPrice()).
+                build();
+    }
 }

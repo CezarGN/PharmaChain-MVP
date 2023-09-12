@@ -1,25 +1,24 @@
 package com.zeroideas.hackathon.Entities;
 
 import jakarta.persistence.*;
-import lombok.*;
-import org.springframework.stereotype.Component;
-
-import java.util.List;
-@Getter
-@Setter
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "medicines")
+@Table(name = "drugs")
 public class Drug {
     @Id
-    long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     @Column(name = "name")
     private String name;
 
     @Column(name = "price")
     private int price;
 
-    @Column(name = "id_pharmacy")
-    private int id_pharmacy;
+    @Column(name = "pharmacy_id")
+    private int pharmacy_id;
 }

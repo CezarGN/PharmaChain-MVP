@@ -7,6 +7,10 @@ import org.springframework.web.bind.annotation.RestController;
 //Controller for future use: good to have
 @RestController
 public class PharmacyController {
-    @Autowired
-    PharmacyServices pharmacyServices;
+
+    private final PharmacyServices pharmacyServices;
+
+    public PharmacyController(PharmacyServices pharmacyServices) {
+        this.pharmacyServices = pharmacyServices;
+    }
 }
